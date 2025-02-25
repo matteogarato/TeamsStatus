@@ -7,9 +7,9 @@
     <LangVersion>default</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Azure.Identity" Version="1.11.4" />
-    <PackageReference Include="Iot.Device.Bindings" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
-    <PackageReference Include="Microsoft.Graph" Version="4.46.0" />
+    <PackageReference Include="Azure.Identity" Version="1.13.2" />
+    <PackageReference Include="Iot.Device.Bindings" Version="3.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.2" />
+    <PackageReference Include="Microsoft.Graph" Version="5.71.0" />
   </ItemGroup>
 </Project>
