@@ -1,43 +1,42 @@
 using Microsoft.Extensions.Hosting;
 using TeamsStatus.ConsoleApp.Interfaces;
 
-namespace TeamsStatus.ConsoleApp
+namespace TeamsStatus.ConsoleApp;
+
+public class Worker : BackgroundService, IWorker
 {
-    public class Worker : BackgroundService, IWorker
+    private readonly IHost _host;
+    private readonly IStoplight _stoplight;
+    private readonly ITeamStatus _teamStatus;
+
+    public Worker(IHost host, ITeamStatus teamStatus, IStoplight stoplight)
     {
-        private readonly IHost _host;
-        private readonly IStoplight _stoplight;
-        private readonly ITeamStatus _teamStatus;
+        _teamStatus = teamStatus;
+        _host = host;
+        _stoplight = stoplight;
+    }
 
-        public Worker(IHost host, ITeamStatus teamStatus, IStoplight stoplight)
+    public override async Task StartAsync(CancellationToken cancellationToken)
+    {
+        if (cancellationToken.IsCancellationRequested)
         {
-            _teamStatus = teamStatus;
-            _host = host;
-            _stoplight = stoplight;
+            await _host.StopAsync();
         }
-
-        public override async Task StartAsync(CancellationToken cancellationToken)
+        else
         {
-            if (cancellationToken.IsCancellationRequested)
+            if (await _teamStatus.Available().ConfigureAwait(false))
             {
-                await _host.StopAsync();
+                _stoplight.SetGreen();
             }
             else
             {
-                if (await _teamStatus.Available().ConfigureAwait(false))
-                {
-                    _stoplight.SetGreen();
-                }
-                else
-                {
-                    _stoplight.SetRed();
-                }
+                _stoplight.SetRed();
             }
         }
+    }
 
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-        {
-            await StartAsync(stoppingToken).ConfigureAwait(false);
-        }
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    {
+        await StartAsync(stoppingToken).ConfigureAwait(false);
     }
 }

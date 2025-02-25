@@ -1,11 +1,10 @@
 using Microsoft.Graph;
 
-namespace TeamsStatus.ConsoleApp.Interfaces
-{
-    public interface ITeamStatus
-    {
-        public Task<bool> Available();
+namespace TeamsStatus.ConsoleApp.Interfaces;
 
-        public Task<Presence> GetAsync();
-    }
+public interface ITeamStatus
+{
+    public Task<bool> Available();
+
+    public Task<Presence> GetAsync();
 }

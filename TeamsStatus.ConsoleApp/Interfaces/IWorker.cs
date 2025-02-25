@@ -1,7 +1,6 @@
-﻿namespace TeamsStatus.ConsoleApp.Interfaces
+﻿namespace TeamsStatus.ConsoleApp.Interfaces;
+
+public interface IWorker
 {
-    public interface IWorker
-    {
-        public Task StartAsync(CancellationToken cancellationToken);
-    }
+    public Task StartAsync(CancellationToken cancellationToken);
 }
